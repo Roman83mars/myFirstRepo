@@ -5,3 +5,4 @@ console.log('HW!') // комментарий
 
 var myVar = 10;
 console.log('commits');
+console.log('commit');
