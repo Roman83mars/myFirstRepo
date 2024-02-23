@@ -6,3 +6,4 @@ const logged = () => {
 }
 
 alert('HW')
+console.log('HW!');
