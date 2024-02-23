@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+const a = "Переменная из lesson03"
+>>>>>>> lesson03
 const b = "Наша ветка lesson01"
 
 const logged = () => {
