@@ -14,7 +14,6 @@ let servicePrice2 = + prompt('Сколько это будет стоить?')
 let fullPrice
 
 let screenPriceProposal = 'Стоимость верстки экранов ' + screenPrice + ' рублей/долларов/гривен/юани'
-let fullPriceProposal = 'Стоимость разработки сайта ' + fullPrice + ' рублей/долларов/гривен/юани'
 
 let allServicePrices = servicePrice1 + servicePrice2
 
@@ -42,6 +41,10 @@ function getFullPrice(screenPrice, allServicePrices) {
     fullPrice = screenPrice + allServicePrices
 }
 
+const getTitle = function (title) {
+    console.log(title.trim().toUpperCase().substring(0, 1) + title.trim().toLowerCase().substring(1));
+}
+
 // switch (true) {
 //     case fullPrice >= 30000:
 //         console.log('Даем скидку в 10%');
@@ -57,8 +60,10 @@ function getFullPrice(screenPrice, allServicePrices) {
 //         break;
 // }
 
+getTitle(title)
 getFullPrice(screenPrice, allServicePrices)
 
+let fullPriceProposal = 'Стоимость разработки сайта ' + fullPrice + ' рублей/долларов/гривен/юани'
 let servicePercentPrice = Math.ceil(fullPrice - (fullPrice * rollback / 100))
 
 showTypeOf(title)
