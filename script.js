@@ -12,6 +12,7 @@ let servicePrice1 = + prompt('Сколько это будет стоить?')
 let service2 = prompt('Какой дополнительный тип услуги нужен?')
 let servicePrice2 = + prompt('Сколько это будет стоить?')
 let fullPrice
+let servicePercentPrice
 
 let screenPriceProposal = 'Стоимость верстки экранов ' + screenPrice + ' рублей/долларов/гривен/юани'
 
@@ -34,56 +35,33 @@ const getRollbackMessage = function (price) {
 }
 
 const getAllServicePrices = function (allServicePrices) {
-    return allServicePrices
+    return allServicePrices;
 }
 
 function getFullPrice(screenPrice, allServicePrices) {
-    fullPrice = screenPrice + allServicePrices
+    fullPrice = screenPrice + allServicePrices;
 }
 
 const getTitle = function (title) {
-    console.log(title.trim().toUpperCase().substring(0, 1) + title.trim().toLowerCase().substring(1));
+    title.trim().toUpperCase().substring(0, 1) + title.trim().toLowerCase().substring(1);
 }
 
-// switch (true) {
-//     case fullPrice >= 30000:
-//         console.log('Даем скидку в 10%');
-//         break;
-//     case fullPrice >= 15000:
-//         console.log('Даем скидку в 5%');
-//         break;
-//     case fullPrice >= 0:
-//         console.log('Скидка не предусмотрена');
-//         break;
-//     default:
-//         console.log('Что то пошло не так');
-//         break;
-// }
+const getServicePercentPrices = function (servicePercentPrice) {
+    console.log(servicePercentPrice = Math.ceil(fullPrice - (fullPrice * rollback / 100))); // +
+}
 
 getTitle(title)
 getFullPrice(screenPrice, allServicePrices)
 
 let fullPriceProposal = 'Стоимость разработки сайта ' + fullPrice + ' рублей/долларов/гривен/юани'
-let servicePercentPrice = Math.ceil(fullPrice - (fullPrice * rollback / 100))
 
-showTypeOf(title)
-showTypeOf(fullPrice)
-showTypeOf(adaptive)
+getServicePercentPrices(servicePercentPrice)
+showTypeOf(title) // +
+showTypeOf(fullPrice) // +
+showTypeOf(adaptive) // +
 
-console.log(getAllServicePrices(allServicePrices));
 
-console.log(getRollbackMessage(fullPrice));
 
-console.log(typeof title)
-console.log(typeof fullPrice)
-console.log(typeof adaptive)
-console.log(typeof title, typeof fullPrice, typeof adaptive)
+console.log(getRollbackMessage(fullPrice)); // +
 
-console.log(servicePercentPrice);
-
-console.log(screens.length);
-
-console.log(screenPriceProposal);
-console.log(fullPriceProposal);
-console.log(screens.toLowerCase().split(', '));
-console.log(fullPrice * rollback / 100);
+console.log(screens.toLowerCase().split(', ')); // +
