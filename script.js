@@ -106,3 +106,8 @@ console.log(screens.toLowerCase().split(', '));
 
 console.log(screenPriceProposal);
 console.log(fullPriceProposal);
+
+console.log(screenPrice);
+console.log(allServicePrices);
+console.log(typeof screenPrice);
+console.log(typeof allServicePrices);
