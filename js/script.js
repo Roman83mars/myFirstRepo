@@ -1,5 +1,19 @@
 'use strict'
 
+const title = document.getElementsByTagName('h1')[0]
+const handlerBtn = document.getElementsByClassName('handler_btn')
+const screenBtn = document.querySelector('.screen-btn')
+const otherItemsPercent = document.querySelectorAll('.other-items.percent')
+const otherItemsNumber = document.querySelectorAll('.other-items.number')
+const inputTypeRange = document.querySelector('.rollback input[type=range]')
+const rangeSpan = document.querySelector('.rollback span.range-value')
+const totalInput1 = document.getElementsByClassName('total-input')[0]
+const totalInput2 = document.getElementsByClassName('total-input')[1]
+const totalInput3 = document.getElementsByClassName('total-input')[2]
+const totalInput4 = document.getElementsByClassName('total-input')[3]
+const totalInput5 = document.getElementsByClassName('total-input')[4]
+let screenChoice = document.querySelectorAll('.screen')
+
 const appData = {
     title: '',
     screens: [],
@@ -13,7 +27,7 @@ const appData = {
 
     asking: function () {
         do {
-            appData.title = prompt('Как называется ваш проект?', '  Калк ')
+            appData.title = prompt('Как называется ваш проект?')
         } while (appData.isNumber(appData.title) || appData.title[0] == ' ' || appData.title == '');
 
         for (let i = 0; i < 2; i++) {
