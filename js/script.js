@@ -1,68 +1,110 @@
 'use strict'
 
 const title = document.getElementsByTagName('h1')[0]
-const handlerBtn = document.getElementsByClassName('handler_btn')
-const screenBtn = document.querySelector('.screen-btn')
+const buttonPlus = document.querySelector('.screen-btn')
 const otherItemsPercent = document.querySelectorAll('.other-items.percent')
 const otherItemsNumber = document.querySelectorAll('.other-items.number')
-const inputTypeRange = document.querySelector('.rollback input[type=range]')
-const rangeSpan = document.querySelector('.rollback span.range-value')
-const totalInput1 = document.getElementsByClassName('total-input')[0]
-const totalInput2 = document.getElementsByClassName('total-input')[1]
-const totalInput3 = document.getElementsByClassName('total-input')[2]
-const totalInput4 = document.getElementsByClassName('total-input')[3]
-const totalInput5 = document.getElementsByClassName('total-input')[4]
-let screenChoice = document.querySelectorAll('.screen')
+
+const inputRange = document.querySelector('.rollback input')
+const inputRangeValue = document.querySelector('.rollback .range-value')
+
+const startBtn = document.getElementsByClassName('handler_btn')[0]
+const resetBtn = document.getElementsByClassName('handler_btn')[1]
+
+const total = document.getElementsByClassName('total-input')[0]
+const totalCount = document.getElementsByClassName('total-input')[1]
+const totalCountOther = document.getElementsByClassName('total-input')[2]
+const fullTotalCount = document.getElementsByClassName('total-input')[3]
+const totalCountRollback = document.getElementsByClassName('total-input')[4]
+
+let screens = document.querySelectorAll('.screen')
 
 const appData = {
     title: '',
     screens: [],
     screenPrice: 0,
     adaptive: true,
-    rollback: 30,
-    allServicePrices: 0,
+    rollback: 20,
+    servicePricesPercent: 0,
+    servicePricesNumber: 0,
     fullPrice: 0,
     servicePercentPrice: 0,
-    services: {},
+    servicesPercent: {},
+    servicesNumber: {},
 
-    asking: function () {
-        do {
-            appData.title = prompt('Как называется ваш проект?')
-        } while (appData.isNumber(appData.title) || appData.title[0] == ' ' || appData.title == '');
+    init: function () {
+        appData.addTitle()
 
-        for (let i = 0; i < 2; i++) {
-            let name = 0
-            let price = 0
+        startBtn.addEventListener('click', appData.start)
+        buttonPlus.addEventListener('click', appData.addScreenBlock)
+    },
 
-            do {
-                name = prompt('Какие типы экранов нужно разработать?')
-            } while (appData.isNumber(name) || name[0] == ' ' || name == '');
+    addTitle: function () {
+        document.title = title.textContent
+    },
 
-            do {
-                price = prompt('Сколько будет стоить данная работа?');
-            } while (!appData.isNumber(price));
+    start: function () {
+        appData.addScreens()
+        appData.addServices()
 
-            appData.screens.push({ id: i, name: name, price: price })
-        }
+        appData.addPrices()
 
-        appData.screenPrice = +appData.screenPrice;
+        // appData.getServicePercentPrices()
 
-        appData.adaptive = confirm('Нужен ли адаптив на сайте?');
+        // appData.logger()
 
-        for (let i = 0; i < 2; i++) {
-            let name = 0
-            let price = 0
+        console.log(appData);
 
-            do {
-                name = prompt('Какой дополнительный тип услуги нужен?')
-            } while (appData.isNumber(name) || name[0] == ' ' || name == '');
+        appData.showResult()
+    },
 
-            do {
-                price = prompt('Сколько это будет стоить?')
-            } while (!appData.isNumber(price))
+    showResult: function () {
+        total.value = appData.screenPrice
+        totalCountOther.value = appData.servicePricesPercent + appData.servicePricesNumber
+        fullTotalCount.value = appData.fullPrice
+    },
 
-            appData.services[name] = +price
-        }
+    addScreens: function () {
+        screens = document.querySelectorAll('.screen')
+
+        screens.forEach(function (screen, index) {
+            const select = screen.querySelector('select')
+            const input = screen.querySelector('input')
+            const selectName = select.options[select.selectedIndex].textContent
+
+            appData.screens.push({
+                id: index,
+                name: selectName,
+                price: +select.value * +input.value
+            })
+        })
+    },
+
+    addServices: function () {
+        otherItemsPercent.forEach(function (item) {
+            const check = item.querySelector('input[type=checkbox]')
+            const label = item.querySelector('label')
+            const input = item.querySelector('input[type=text]')
+
+            if (check.checked) {
+                appData.servicesPercent[label.textContent] = +input.value
+            }
+        })
+
+        otherItemsNumber.forEach(function (item) {
+            const check = item.querySelector('input[type=checkbox]')
+            const label = item.querySelector('label')
+            const input = item.querySelector('input[type=text]')
+
+            if (check.checked) {
+                appData.servicesNumber[label.textContent] = +input.value
+            }
+        })
+    },
+
+    addScreenBlock: function () {
+        const clonScreen = screens[0].cloneNode(true)
+        buttonPlus.before(clonScreen)
     },
 
     addPrices: function () {
@@ -70,13 +112,15 @@ const appData = {
             appData.screenPrice += +screen.price
         }
 
-        for (let key in appData.services) {
-            appData.allServicePrices += appData.services[key]
+        for (let key in appData.servicesNumber) {
+            appData.servicePricesNumber += appData.servicesNumber[key]
         }
-    },
 
-    isNumber: function (num) {
-        return !isNaN(parseFloat(num)) && isFinite(num)
+        for (let key in appData.servicesPercent) {
+            appData.servicePricesPercent += appData.screenPrice * appData.servicesPercent[key] / 100
+        }
+
+        appData.fullPrice = appData.screenPrice + appData.servicePricesNumber + appData.servicePricesPercent
     },
 
     getRollbackMessage: function (price) {
@@ -91,26 +135,8 @@ const appData = {
         }
     },
 
-    getFullPrice: function () {
-        appData.fullPrice = appData.screenPrice + appData.allServicePrices;
-    },
-
-    getTitle: function () {
-        appData.title = appData.title.trim().toUpperCase().substring(0, 1) + appData.title.trim().toLowerCase().substring(1);
-        // return title.trim()[0].toUpperCase() + title.trim().substr(1).toLowerCase()
-    },
-
     getServicePercentPrices: function () {
         appData.servicePercentPrice = Math.ceil(appData.fullPrice - (appData.fullPrice * appData.rollback / 100))
-    },
-
-    start: function () {
-        appData.asking()
-        appData.addPrices()
-        appData.getFullPrice()
-        appData.getServicePercentPrices()
-        appData.getTitle()
-        appData.logger()
     },
 
     logger: function () {
@@ -120,7 +146,13 @@ const appData = {
         for (let key in appData) {
             console.log(key);
         }
+    },
+
+    justNumber: function () {
+        const input = document.querySelector('.screen input')
+        input.value = input.value.replace(/[^\d]/g, '')
+        input.addEventListener('keyup', appData.justNumber)
     }
 }
 
-appData.start()
+appData.init()
