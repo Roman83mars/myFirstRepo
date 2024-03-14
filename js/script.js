@@ -62,13 +62,7 @@ const appData = {
         if (appData.checkFields()) {
             appData.addScreens()
             appData.addServices()
-
             appData.addPrices()
-
-            // appData.getServicePercentPrices()
-
-            // appData.logger()
-
             appData.showResult()
         }
     },
@@ -78,6 +72,7 @@ const appData = {
         totalCountOther.value = appData.servicePricesPercent + appData.servicePricesNumber
         fullTotalCount.value = appData.fullPrice
         totalCountRollback.value = appData.servicePercentPrice
+        totalCount.value = appData.count
     },
 
     addScreens: function () {
@@ -91,7 +86,8 @@ const appData = {
             appData.screens.push({
                 id: index,
                 name: selectName,
-                price: +select.value * +input.value
+                price: +select.value * +input.value,
+                quantity: +input.value
             })
         })
     },
@@ -139,25 +135,14 @@ const appData = {
         appData.fullPrice = appData.screenPrice + appData.servicePricesNumber + appData.servicePricesPercent
         appData.servicePercentPrice = Math.ceil(appData.fullPrice - (appData.fullPrice * appData.rollback / 100))
 
-        console.dir(appData.screens.name);
+        appData.count = appData.screens.reduce(function (sum, screen) {
+            return sum + screen.quantity
+        }, 0)
     },
 
     getRollback: function () {
         inputRangeValue.textContent = inputRange.value + '%'
         appData.rollback = inputRange.value
-    },
-
-    getServicePercentPrices: function () {
-
-    },
-
-    logger: function () {
-        console.log(appData.fullPrice);
-        console.log(appData.servicePercentPrice);
-        console.log(appData.screens);
-        for (let key in appData) {
-            console.log(key);
-        }
     },
 
     justNumber: function () {
