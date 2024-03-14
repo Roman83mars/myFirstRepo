@@ -24,42 +24,60 @@ const appData = {
     screens: [],
     screenPrice: 0,
     adaptive: true,
-    rollback: 20,
+    rollback: 0,
     servicePricesPercent: 0,
     servicePricesNumber: 0,
     fullPrice: 0,
     servicePercentPrice: 0,
     servicesPercent: {},
     servicesNumber: {},
+    count: 0,
 
     init: function () {
         appData.addTitle()
 
         startBtn.addEventListener('click', appData.start)
         buttonPlus.addEventListener('click', appData.addScreenBlock)
+        inputRange.addEventListener('input', appData.getRollback)
     },
 
     addTitle: function () {
         document.title = title.textContent
     },
 
+    checkFields() {
+        screens = document.querySelectorAll('.screen')
+        let error = false
+        screens.forEach(function (screen) {
+            const select = screen.querySelector('select')
+            const input = screen.querySelector('input')
+            if (select.selectedIndex === 0 || input.value === '') {
+                error = true
+            }
+        })
+        return !error
+    },
+
     start: function () {
-        appData.addScreens()
-        appData.addServices()
+        if (appData.checkFields()) {
+            appData.addScreens()
+            appData.addServices()
 
-        appData.addPrices()
+            appData.addPrices()
 
-        // appData.getServicePercentPrices()
+            // appData.getServicePercentPrices()
 
-        // appData.logger()
+            // appData.logger()
 
-        appData.showResult()
+            appData.showResult()
+        }
     },
 
     showResult: function () {
         total.value = appData.screenPrice
         totalCountOther.value = appData.servicePricesPercent + appData.servicePricesNumber
         fullTotalCount.value = appData.fullPrice
+        totalCountRollback.value = appData.servicePercentPrice
     },
 
     addScreens: function () {
@@ -119,10 +137,18 @@ const appData = {
         }
 
         appData.fullPrice = appData.screenPrice + appData.servicePricesNumber + appData.servicePricesPercent
+        appData.servicePercentPrice = Math.ceil(appData.fullPrice - (appData.fullPrice * appData.rollback / 100))
+
+        console.dir(appData.screens.name);
+    },
+
+    getRollback: function () {
+        inputRangeValue.textContent = inputRange.value + '%'
+        appData.rollback = inputRange.value
     },
 
     getServicePercentPrices: function () {
-        appData.servicePercentPrice = Math.ceil(appData.fullPrice - (appData.fullPrice * appData.rollback / 100))
+
     },
 
     logger: function () {
