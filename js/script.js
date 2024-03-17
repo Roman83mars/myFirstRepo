@@ -34,18 +34,18 @@ const appData = {
     count: 0,
 
     init: function () {
-        appData.addTitle()
+        this.addTitle()
 
-        startBtn.addEventListener('click', appData.start)
-        buttonPlus.addEventListener('click', appData.addScreenBlock)
-        inputRange.addEventListener('input', appData.getRollback)
+        startBtn.addEventListener('click', this.start.bind(this))
+        buttonPlus.addEventListener('click', this.addScreenBlock.bind(this))
+        inputRange.addEventListener('input', this.getRollback.bind(this))
     },
 
     addTitle: function () {
         document.title = title.textContent
     },
 
-    checkFields() {
+    checkFields: function () {
         screens = document.querySelectorAll('.screen')
         let error = false
         screens.forEach(function (screen) {
@@ -59,26 +59,29 @@ const appData = {
     },
 
     start: function () {
-        if (appData.checkFields()) {
-            appData.addScreens()
-            appData.addServices()
-            appData.addPrices()
-            appData.showResult()
+        if (this.checkFields()) {
+            this.addScreens()
+            this.addServices()
+            this.addPrices()
+            this.showResult()
         }
     },
 
     showResult: function () {
-        total.value = appData.screenPrice
-        totalCountOther.value = appData.servicePricesPercent + appData.servicePricesNumber
-        fullTotalCount.value = appData.fullPrice
-        totalCountRollback.value = appData.servicePercentPrice
-        totalCount.value = appData.count
+        total.value = this.screenPrice
+        totalCountOther.value = this.servicePricesPercent + this.servicePricesNumber
+        fullTotalCount.value = this.fullPrice
+        totalCountRollback.value = this.servicePercentPrice
+        totalCount.value = this.count
     },
 
     addScreens: function () {
         screens = document.querySelectorAll('.screen')
 
+        console.log(this);
+
         screens.forEach(function (screen, index) {
+
             const select = screen.querySelector('select')
             const input = screen.querySelector('input')
             const selectName = select.options[select.selectedIndex].textContent
